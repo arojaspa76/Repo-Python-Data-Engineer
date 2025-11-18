@@ -8,3 +8,4 @@ datasets
 pytest
 black
 pylint
+openpyxl
