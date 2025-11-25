@@ -45,7 +45,7 @@ En este ejemplo, nuestro DynamicArray duplica su capacidad cuando se llena. Pyth
 
 Un árbol es una estructura de datos jerárquica compuesta por nodos con una relación padre-hijo. En particular, un árbol binario de búsqueda (BST) es un tipo de árbol binario donde cada nodo tiene a lo sumo dos hijos (izquierdo y derecho), y se cumple que los valores del subárbol izquierdo son menores al valor del nodo, y los del subárbol derecho son mayores. Esta propiedad ordenada permite búsquedas eficientes: en un BST balanceado, buscar un elemento tiene complejidad promedio O(log n) lo que implica que el tiempo necesario para completar la operación (la búsqueda, en este caso) crece de forma muy lenta a medida que se añaden más elementos ($n$), ya que se descarta la mitad del árbol en cada comparación. Sin embargo, en el peor caso (por ejemplo, si el árbol se “degenera” significa que pierde su estructura de árbol eficiente y se transforma en una estructura ineficiente que es funcionalmente equivalente a una lista enlazada) la búsqueda puede ser O(n). Además de búsqueda, los BST soportan inserción y eliminación en tiempo.
 
-![alt text](image-1.png)
+![alt text](media/image-1.png)
 
 En la Figura vemos un ejemplo de un árbol binario de búsqueda de 9 nodos y profundidad 3, con 8 en la raíz. Cada nodo a la izquierda tiene un valor menor, y a la derecha un valor mayor que la raíz, manteniendo orden para búsqueda eficiente. En un BST balanceado, operaciones de búsqueda, inserción y eliminación son O(log n) en promedio, aunque en el peor caso degenerado podrían caer a O(n). 
 
@@ -179,11 +179,11 @@ En este código, insert y search operan de forma recursiva siguiendo la propieda
 
 ### Grafos
 
-![alt text](image-2.png)
+![alt text](media/image-2.png)
 
 Un grafo es una estructura que modela relaciones entre entidades mediante nodos (vértices) y aristas (edges) que conectan pares de nodos. Formalmente, un grafo se define como un conjunto de vértices V y un conjunto de aristas E (pares de vértices). Pueden ser dirigidos (aristas con dirección) o no dirigidos. En la práctica, para representar un grafo en código suelen utilizarse dos técnicas principales: lista de adyacencia o matriz de adyacencia. 
 
-![alt text](image-3.png)
+![alt text](media/image-3.png)
 
 En la lista de adyacencia, para cada vértice se mantiene una lista de los vecinos a los que está conectado (es muy eficiente en espacio para grafos dispersos). En la matriz de adyacencia, se utiliza una matriz |V|x|V| donde en la posición (i,j) se indica la existencia (y posiblemente peso) de la arista de i a j. Esta última facilita ciertas operaciones de consulta en O(1) (por ejemplo, verificar si existe conexión directa entre i y j), pero consume más memoria y es O(V^2) para recorrer todas las conexiones.
 
@@ -320,7 +320,7 @@ Desde el punto de vista de eficiencia, las operaciones típicas en grafos (como 
 
 Una cola es una estructura de datos lineal que sigue la política FIFO (First-In First-Out), es decir, el primer elemento en entrar es el primero en salir. Podemos imaginar una cola como una fila de personas: el primero en la fila es atendido antes que los que llegaron después. 
 
-![alt text](image.png)
+![alt text](media/image.png)
 
 El la figura anteriore, podemos ver la ilustración de una cola (FIFO). El elemento A está en el frente de la cola listo para salir primero, seguido por B, C y D en ese orden
 
@@ -328,19 +328,19 @@ Las operaciones básicas son Enqueue (encolar, insertar un elemento al final de 
 
 El método Enqueue se utiliza para añadir nuevos nodos a la cola. Recuerde que lo que define una cola es su estructura FIFO, por lo que todos los nodos nuevos deben añadirse al final de la cola. A continuación, se muestra una ilustración para visualizar una operación de encolado.
 
-![alt text](image-4.png)
+![alt text](media/image-4.png)
 
 Antes de declarar el nuevo nodo como la Cola de la cola, la Cola anterior apunta su próximo valor al nuevo Nodo.
 
-![alt text](image-5.png)
+![alt text](media/image-5.png)
 
 El método Dequeue se utiliza para eliminar el primer nodo de nuestra lista vinculada.
 
-![alt text](image-6.png)
+![alt text](media/image-6.png)
 
 Esto se hace estableciendo el segundo nodo de la cola en la Cabeza, antes de quitar la Cabeza anterior de la cola.
 
-![alt text](image-7.png)
+![alt text](media/image-7.png)
 
 
 En las colas, las inserciones ocurren en la parte trasera y las eliminaciones en la delantera. Esta disciplina garantiza que el primero en entrar es el primero en salir, análogo a una fila en la vida real.
