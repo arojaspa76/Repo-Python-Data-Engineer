@@ -39,7 +39,7 @@ print(arr.data, arr.length, arr.capacity)  # [0, 1, 2, 3, 4, None, None, None] 5
 
 ```
 
-En este ejemplo, nuestro DynamicArray duplica su capacidad cuando se llena. Python hace algo similar de manera eficiente en C: por eso list.append tiende a ser muy rápido en promedio. Una vez entendida la implementación, en aplicaciones reales se utiliza directamente list de Python, aprovechando sus operaciones optimizadas. En resumen, las listas nos proporcionan versatilidad para almacenar colecciones y permiten: acceso indexado rápido, añadir/remover al final eficientemente, pero no son ideales para inserciones/eliminaciones frecuentes al comienzo (donde conviene usar otras estructuras, como veremos con las colas).
+En este ejemplo, nuestro DynamicArray duplica su capacidad cuando se llena. Python hace algo similar de manera eficiente en C por eso list.append tiende a ser muy rápido en promedio. Una vez entendida la implementación, en aplicaciones reales se utiliza directamente list de Python, aprovechando sus operaciones optimizadas. En resumen, las listas nos proporcionan versatilidad para almacenar colecciones y permiten: acceso indexado rápido, añadir/remover al final eficientemente, pero no son ideales para inserciones/eliminaciones frecuentes al comienzo (donde conviene usar otras estructuras, como veremos con las colas).
 
 ### Árboles (Ejemplo: Árbol Binario de Búsqueda)
 
