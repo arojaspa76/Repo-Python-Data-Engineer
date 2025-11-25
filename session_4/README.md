@@ -293,7 +293,7 @@ print(ciudades.adjacency)
 ```
 
 Resultado esperado:
-```Json
+```bash
 {
     'Bogota': ['Medellin', 'Cali'],
     'Medellin': ['Bogota', 'Barranquilla'],
