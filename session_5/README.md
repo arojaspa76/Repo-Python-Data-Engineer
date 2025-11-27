@@ -1,18 +1,16 @@
-# Cloud Algorithms – Búsqueda y Ordenación en Azure, AWS y GCP
-### (Lectura desde Storage + Functions/Lambda)
+# Cloud Portals Guide – Crear Storage + Functions + Códigos Python (Azure, AWS, GCP)
 
-Este documento contiene los ejemplos completos para:
+Esta guía contiene:
 
-- Leer un archivo `data.csv` desde el almacenamiento de cada cloud  
-- Ejecutar algoritmos de **ordenación** (quicksort) y **búsqueda** (binary search)  
-- Exponerlos mediante funciones serverless:
-  - **Azure Functions**
-  - **AWS Lambda**
-  - **Google Cloud Functions**
+✔️ Pasos **clic por clic** desde los portales web de Azure, AWS y GCP  
+✔️ Cómo crear Storage en cada nube  
+✔️ Cómo crear Functions/Lambda/Cloud Functions  
+✔️ **Los códigos Python completos que deben copiarse dentro de cada función**  
+✔️ Archivo listo para GitHub  
 
 ---
 
-## 📌 0. Archivo de datos usado en los ejemplos
+# 0. Archivo de datos usado (`data.csv`)
 
 ```
 42
@@ -24,9 +22,65 @@ Este documento contiene los ejemplos completos para:
 
 ---
 
-# 📘 1. Azure — Blob Storage + Azure Function (HTTP Trigger)
+# 1. Azure Portal – Blob Storage + Azure Function (HTTP Trigger)
 
-## 1.1. Código de la Azure Function (`__init__.py`)
+## 1.1. Crear Storage Account y contenedor (Portal Web)
+
+1. Ir a: https://portal.azure.com  
+2. Create a Resource → “Storage account” → **Create**  
+3. Configuración:  
+   - RG: `rg-algoritmos-azure`  
+   - Nombre: `algostorage<unico>`  
+   - Region: East US  
+   - Redundancy: LRS  
+4. Review + Create  
+5. Ir al Storage → Containers → **+ Container**  
+6. Nombre: `datasets`  
+7. Entrar al contenedor → **Upload** → subir `data.csv`
+
+---
+
+## 1.2. Crear Function App
+
+1. Create a Resource → **Function App**  
+2. Configuración:
+   - Publish: Code  
+   - Runtime: Python 3.11  
+   - OS: Linux  
+   - Region: misma del Storage  
+   - Storage: seleccionar el Storage creado  
+3. Review + Create
+
+---
+
+## 1.3. Crear Function HTTP en el portal
+
+1. Function App → **Functions** → **+ Create**  
+2. Develop in portal  
+3. Template: HTTP trigger  
+4. Name: `sort_and_search`  
+5. Auth level: Anonymous  
+
+---
+
+## 1.4. Configurar Application Settings
+
+En Function App → **Configuration** → Application Settings:
+
+```
+AZURE_STORAGE_ACCOUNT_NAME=<nombre_storage>
+AZURE_STORAGE_ACCOUNT_KEY=<key>
+AZURE_STORAGE_CONTAINER=datasets
+AZURE_STORAGE_BLOB=data.csv
+```
+
+Guardar y reiniciar.
+
+---
+
+## 1.5. Copiar el CÓDIGO PYTHON completo dentro de Azure Function
+
+En la función → **Code + Test** → abrir `__init__.py` y pegar:
 
 ```python
 import logging
@@ -34,8 +88,6 @@ import os
 import azure.functions as func
 from azure.storage.blob import BlobServiceClient
 
-
-# ---- ALGORITMOS ----
 def quicksort(arr):
     if len(arr) <= 1:
         return arr
@@ -44,7 +96,6 @@ def quicksort(arr):
     mid   = [x for x in arr if x == pivot]
     right = [x for x in arr if x > pivot]
     return quicksort(left) + mid + quicksort(right)
-
 
 def binary_search(sorted_list, target):
     left, right = 0, len(sorted_list)-1
@@ -58,45 +109,30 @@ def binary_search(sorted_list, target):
             right = mid - 1
     return -1
 
-
-# ---- HANDLER HTTP ----
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info("Processing Azure Function request...")
+    target = req.params.get("target")
+    if not target:
+        body = req.get_json(silent=True) or {}
+        target = body.get("target")
+    if target is None:
+        return func.HttpResponse("Please pass target", status_code=400)
+    target = int(target)
 
-    target_str = req.params.get("target")
-    if not target_str:
-        try:
-            req_body = req.get_json()
-            target_str = req_body.get("target")
-        except:
-            pass
-
-    if target_str is None:
-        return func.HttpResponse(
-            "Please pass '?target=<integer>'.",
-            status_code=400
-        )
-
-    target = int(target_str)
-
-    acc_name = os.environ["AZURE_STORAGE_ACCOUNT_NAME"]
-    acc_key  = os.environ["AZURE_STORAGE_ACCOUNT_KEY"]
+    acc = os.environ["AZURE_STORAGE_ACCOUNT_NAME"]
+    key = os.environ["AZURE_STORAGE_ACCOUNT_KEY"]
     container = os.environ["AZURE_STORAGE_CONTAINER"]
     blob_name = os.environ["AZURE_STORAGE_BLOB"]
 
-    conn_str = (
-        f"DefaultEndpointsProtocol=https;"
-        f"AccountName={acc_name};"
-        f"AccountKey={acc_key};"
-        f"EndpointSuffix=core.windows.net"
+    conn = (
+        f"DefaultEndpointsProtocol=https;AccountName={acc};"
+        f"AccountKey={key};EndpointSuffix=core.windows.net"
     )
 
-    blob_service = BlobServiceClient.from_connection_string(conn_str)
-    container_client = blob_service.get_container_client(container)
-    blob_client = container_client.get_blob_client(blob_name)
+    client = BlobServiceClient.from_connection_string(conn)
+    blob_client = client.get_container_client(container).get_blob_client(blob_name)
 
     data = blob_client.download_blob().readall().decode().splitlines()
-    numbers = [int(x) for x in data if x.strip()]
+    numbers = [int(x) for x in data if x]
 
     sorted_numbers = quicksort(numbers)
     index = binary_search(sorted_numbers, target)
@@ -106,25 +142,62 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "original": numbers,
             "sorted": sorted_numbers,
             "target": target,
-            "index": index,
+            "index": index
         }),
-        status_code=200,
         mimetype="application/json"
     )
 ```
 
 ---
 
-# 🟦 2. AWS — S3 + AWS Lambda
+## 1.6. Probar desde el portal
 
-## 2.1. Código (`lambda_function.py`)
+1. Code + Test  
+2. Test/Run → GET  
+3. Query: `target=13`  
+4. Ejecutar  
+
+---
+
+# 2. AWS Console – S3 + AWS Lambda (Editor Web)
+
+## 2.1. Crear bucket S3
+
+1. https://console.aws.amazon.com  
+2. Buscar S3 → **Create bucket**  
+3. Nombre: `algorithms-demo-<unico>`  
+4. Region: us-east-1  
+5. Upload → seleccionar `data.csv`
+
+---
+
+## 2.2. Crear Lambda (Author from scratch)
+
+1. AWS Console → Lambda  
+2. Create Function → Author from Scratch  
+3. Name: `algorithms-demo`  
+4. Runtime: Python 3.x  
+5. Crear rol básico  
+
+---
+
+## 2.3. Permisos de lectura S3
+
+1. Lambda → Configuration → Permissions  
+2. Abrir Role  
+3. Attach policy: `AmazonS3ReadOnlyAccess`
+
+---
+
+## 2.4. Copiar el CÓDIGO PYTHON completo dentro de Lambda
+
+En la pestaña **Code**, archivo `lambda_function.py`:
 
 ```python
 import json
 import boto3
 
 s3 = boto3.client("s3")
-
 
 def quicksort(arr):
     if len(arr) <= 1:
@@ -135,9 +208,8 @@ def quicksort(arr):
     right = [x for x in arr if x > pivot]
     return quicksort(left) + mid + quicksort(right)
 
-
 def binary_search(sorted_list, target):
-    left, right = 0, len(sorted_list) - 1
+    left, right = 0, len(sorted_list)-1
     while left <= right:
         mid = (left + right) // 2
         if sorted_list[mid] == target:
@@ -148,15 +220,13 @@ def binary_search(sorted_list, target):
             right = mid - 1
     return -1
 
-
 def lambda_handler(event, context):
-    bucket = event.get("bucket")
+    bucket = event["bucket"]
     key = event.get("key", "data.csv")
     target = int(event.get("target", 13))
 
-    obj = s3.get_object(Bucket=bucket, Key=key)
-    raw = obj["Body"].read().decode().splitlines()
-    numbers = [int(x) for x in raw if x.strip()]
+    raw = s3.get_object(Bucket=bucket, Key=key)["Body"].read().decode().splitlines()
+    numbers = [int(x) for x in raw if x]
 
     sorted_numbers = quicksort(numbers)
     index = binary_search(sorted_numbers, target)
@@ -174,14 +244,51 @@ def lambda_handler(event, context):
 
 ---
 
-# 🟨 3. Google Cloud — Cloud Storage + Cloud Function
+## 2.5. Probar Lambda
 
-## 3.1. Código (`main.py`)
+Evento de prueba:
+
+```json
+{
+  "bucket": "algorithms-demo-XXXX",
+  "key": "data.csv",
+  "target": 13
+}
+```
+
+Presionar **Test**.
+
+---
+
+# 3. Google Cloud Console – Cloud Storage + Cloud Functions
+
+## 3.1. Crear bucket en Cloud Storage
+
+1. https://console.cloud.google.com  
+2. Cloud Storage → Buckets → Create  
+3. Nombre: `algorithms-demo-<unico>`  
+4. Location: us-central1  
+5. Upload `data.csv`
+
+---
+
+## 3.2. Crear Cloud Function (HTTP)
+
+1. Cloud Run → Create Function  
+2. Runtime: Python 3.11  
+3. Auth: Allow unauthenticated  
+4. Entry point: `sort_and_search_http`  
+5. Inline editor  
+
+---
+
+## 3.3. Copiar el CÓDIGO PYTHON completo en Cloud Functions
+
+Archivo `main.py`:
 
 ```python
 import json
 from google.cloud import storage
-
 
 def quicksort(arr):
     if len(arr) <= 1:
@@ -191,7 +298,6 @@ def quicksort(arr):
     mid   = [x for x in arr if x == pivot]
     right = [x for x in arr if x > pivot]
     return quicksort(left) + mid + quicksort(right)
-
 
 def binary_search(sorted_list, target):
     left, right = 0, len(sorted_list)-1
@@ -205,23 +311,24 @@ def binary_search(sorted_list, target):
             right = mid-1
     return -1
 
-
 def sort_and_search_http(request):
-    request_args = request.args or {}
-
-    bucket = request_args.get("bucket")
-    blob_name = request_args.get("blob", "data.csv")
-    target = int(request_args.get("target", 13))
+    args = request.args or {}
+    bucket = args.get("bucket")
+    blob_name = args.get("blob", "data.csv")
+    target = int(args.get("target", 13))
 
     if not bucket:
-        return ("Parameter 'bucket' is required", 400)
+        return ("Missing bucket", 400)
 
     client = storage.Client()
-    bucket_obj = client.bucket(bucket)
-    blob = bucket_obj.blob(blob_name)
-
-    data = blob.download_as_text().strip().splitlines()
-    numbers = [int(x) for x in data if x.strip()]
+    data = (
+        client.bucket(bucket)
+              .blob(blob_name)
+              .download_as_text()
+              .strip()
+              .splitlines()
+    )
+    numbers = [int(x) for x in data if x]
 
     sorted_numbers = quicksort(numbers)
     index = binary_search(sorted_numbers, target)
@@ -238,7 +345,7 @@ def sort_and_search_http(request):
     )
 ```
 
-## 3.2. requirements.txt
+Archivo `requirements.txt`:
 
 ```
 google-cloud-storage
@@ -246,19 +353,16 @@ google-cloud-storage
 
 ---
 
-# 🧪 4. Invocación rápida
+## 3.4. Probar Cloud Function
 
-## Azure:
-```
-https://<functionapp>.azurewebsites.net/api/sort_and_search?target=13
-```
+Testing → Query params:
 
-## AWS:
 ```
-aws lambda invoke  --function-name algorithms-demo  --payload '{"bucket":"mybucket","key":"data.csv","target":13}'  out.json
+bucket=algorithms-demo-XXXXX&blob=data.csv&target=13
 ```
 
-## GCP:
-```
-https://<region>-<project>.cloudfunctions.net/sort-and-search-http?bucket=mybucket&blob=data.csv&target=13
-```
+---
+
+# ✔️ Fin del archivo
+
+Este archivo contiene **todos los pasos de portal** y **todo el código Python listo para copiar** en Azure, AWS y GCP.
