@@ -39,6 +39,16 @@ az version
 az login
 ```
 
+## Para listar suscripciones disponibles:
+```powershell
+az account list -o table
+```
+
+## Seleccionar una suscripción específica: 
+```powershell
+az account set --subscription "<ID o Nombre>"
+```
+
 ---
 
 # 2. Instalar AWS CLI en Windows 11
