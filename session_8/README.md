@@ -8,3 +8,5 @@
 2. [Introducción a Data Warehousing con Amazon Redshift (AWS)](datawarehousing.md)  
 3. [Introducción a BigQuery para Data Warehousing (GCP)](bigquery.md)  
 4. [Lecturas recomendadas](lecturasrecomendadas.md)
+5. [Ejemplo AWS](ejemploaws.md)
+6. [Ejemplo GCP](ejemplogcp.md)
