@@ -1,6 +1,6 @@
 # Ejemplo Paso a Paso: AWS (Finanzas)
 
-En esta guía, desarrollaremos **un ejemplo de Ejemplo de datos** de manera detallada y paso a paso, usando servicios de AWS (Amazon Web Services) para un caso de **finanzas**. Todo el flujo se implementará en Python (por ejemplo, desde Jupyter Notebooks locales), aprovechando servicios administrados de cada plataforma, de AWS usaremos **Amazon S3** (almacenamiento de objetos), **Amazon Redshift** (almacenamiento de datos tipo data warehouse) y opcionalmente **Amazon SageMaker** (entrenamiento de modelos ML); También se mencionarán prácticas de optimización de rendimiento, manejo de grandes volúmenes de datos y la gestión de cargas de trabajo en cada entorno.
+En esta guía, desarrollaremos **un ejemplo de Ejemplo de datos** de manera detallada y paso a paso, usando servicios de AWS (Amazon Web Services) para un caso de **finanzas**. Todo el flujo se implementará en Python (por ejemplo, desde Jupyter Notebooks locales), aprovechando servicios administrados en AWS usaremos **Amazon S3** (almacenamiento de objetos), **Amazon Redshift** (almacenamiento de datos tipo data warehouse) y opcionalmente **Amazon SageMaker** (entrenamiento de modelos ML); También se mencionarán prácticas de optimización de rendimiento, manejo de grandes volúmenes de datos y la gestión de cargas de trabajo en cada entorno.
 
 **Tabla de Contenido:**
 
@@ -235,12 +235,12 @@ xgb_estimator.fit({"train": train_path})
 - **Implantar el modelo en un endpoint (servicio REST):** Una vez entrenado, podemos desplegar el modelo para inferencia en tiempo real:
 
 ```python
-  predictor = xgb\_estimator.deploy(initial\_instance\_count=1, instance\_type="ml.m5.large")
+predictor = xgb_estimator.deploy(initial_instance_count=1, instance_type="ml.m5.large")
 
-  # Esto crea un endpoint HTTPS en SageMaker que aloja el modelo XGBoost. El predictor retornado nos permite enviar datos para predicción:
+# Esto crea un endpoint HTTPS en SageMaker que aloja el modelo XGBoost. El predictor retornado nos permite enviar datos para predicción:
 
-  response = predictor.predict(data\_for\_prediction)\
-  print(response)
+response = predictor.predict(data_for_prediction)
+print(response)
 ```
 
   Donde data\_for\_prediction puede ser, por ejemplo, un CSV con características de nuevas transacciones o clientes para clasificar. Internamente, deploy lanza una instancia con un servidor que carga el modelo entrenado y espera peticiones[\[17\]](https://sagemaker.readthedocs.io/en/stable/frameworks/xgboost/using_xgboost.html#:~:text=After%20you%20fit%20an%20XGBoost,newly%20created%20model%20in%20SageMaker)[\[18\]](https://sagemaker.readthedocs.io/en/stable/frameworks/xgboost/using_xgboost.html#:~:text=predictor%20%3D%20estimator.deploy%28%20initial_instance_count%3D1%2C%20instance_type%3D,serializer%3Dserializer).
