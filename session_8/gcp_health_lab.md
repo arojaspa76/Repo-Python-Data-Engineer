@@ -27,13 +27,22 @@ Guiar paso a paso al estudiante para crear un pipeline de datos clínicos en Goo
 
 ### Paso 1: Dataset de Salud
 
-- Descargar dataset de Kaggle (por ejemplo, Heart Disease UCI o similar)
-- Renombrar como `patients.csv`
+- Usar el dataset `patients.csv` que está en la carpeta [gcp_lab](gcp_lab/patients.csv)
 - Inspeccionar localmente:
   ```python
   import pandas as pd
+  import tempfile
+  import os
+  
+  # 1. Cargar el CSV original y eliminar la columna 'id'
   df = pd.read_csv("patients.csv")
-  df.head()
+  df.drop(columns=["id"], inplace=True)
+
+  # 2. Guardar en un archivo temporal sin 'id'
+  with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as tmp:
+    temp_path = tmp.name
+  
+  df.to_csv(temp_path, index=False)
   ```
 
 ---
@@ -42,11 +51,17 @@ Guiar paso a paso al estudiante para crear un pipeline de datos clínicos en Goo
 
 ```python
 from google.cloud import storage
+
+# 3. Subir el archivo limpio al bucket
 client = storage.Client()
 bucket_name = "salud-lab-demo"
 bucket = client.create_bucket(bucket_name, location="US")
-blob = bucket.blob("datasets/patients.csv")
-blob.upload_from_filename("patients.csv")
+blob = bucket.blob("datasets/patients_no_id.csv")
+
+blob.upload_from_filename(temp_path)
+
+# 4. borrar el archivo temporal
+os.remove(temp_path)
 ```
 
 ---
@@ -55,20 +70,30 @@ blob.upload_from_filename("patients.csv")
 
 ```python
 from google.cloud import bigquery
+
 bq_client = bigquery.Client()
 project_id = bq_client.project
 dataset_id = "healthcare_analysis"
 dataset_ref = bigquery.Dataset(f"{project_id}.{dataset_id}")
+
 bq_client.create_dataset(dataset_ref, exists_ok=True)
 
 schema = [
-    bigquery.SchemaField("Age", "INTEGER"),
-    bigquery.SchemaField("Sex", "STRING"),
-    bigquery.SchemaField("ChestPain", "STRING"),
-    bigquery.SchemaField("BloodPressure", "INTEGER"),
-    bigquery.SchemaField("Cholesterol", "INTEGER"),
-    bigquery.SchemaField("Diagnosis", "STRING"),
-    bigquery.SchemaField("Outcome", "INTEGER")
+    bigquery.SchemaField("age", "INT64"),
+    bigquery.SchemaField("sex", "STRING"),
+    bigquery.SchemaField("dataset", "STRING"),
+    bigquery.SchemaField("cp", "STRING"),
+    bigquery.SchemaField("trestbps", "FLOAT64"),
+    bigquery.SchemaField("chol", "FLOAT64"),
+    bigquery.SchemaField("fbs", "STRING"),
+    bigquery.SchemaField("restecg", "STRING"),
+    bigquery.SchemaField("thalch", "FLOAT64"),
+    bigquery.SchemaField("exang", "STRING"),
+    bigquery.SchemaField("oldpeak", "FLOAT64"),
+    bigquery.SchemaField("slope", "STRING"),
+    bigquery.SchemaField("ca", "FLOAT64"),
+    bigquery.SchemaField("thal", "STRING"),
+    bigquery.SchemaField("num", "INT64")    
 ]
 
 table_id = f"{project_id}.{dataset_id}.patients"
@@ -81,7 +106,7 @@ bq_client.create_table(table, exists_ok=True)
 ### Paso 4: Cargar datos desde GCS a BigQuery
 
 ```python
-uri = f"gs://{bucket_name}/datasets/patients.csv"
+uri = f"gs://{bucket_name}/datasets/patients_no_id.csv"
 job_config = bigquery.LoadJobConfig(
     source_format=bigquery.SourceFormat.CSV,
     skip_leading_rows=1,
@@ -97,9 +122,9 @@ load_job.result()
 
 ```python
 query = f"""
-SELECT Diagnosis, COUNT(*) as pacientes, AVG(Cholesterol) as avg_chol
+SELECT cp, COUNT(*) as pacientes, AVG(chol) as avg_chol
 FROM `{table_id}`
-GROUP BY Diagnosis
+GROUP BY cp
 ORDER BY avg_chol DESC
 """
 df = bq_client.query(query).to_dataframe()
@@ -115,13 +140,19 @@ Recrear tabla con partición (si hay fecha) y clustering por Diagnosis:
 from google.cloud import bigquery
 clustering_schema = schema  # mismo esquema
 clustering_table = bigquery.Table(table_id, schema=clustering_schema)
-clustering_table.clustering_fields = ["Diagnosis"]
+clustering_table.clustering_fields = ["cp"]
 bq_client.update_table(clustering_table, ["clustering_fields"])
 ```
 
 ---
 
 ### Paso 7 (opcional): Modelo con Vertex AI
+
+Antes de usar aiplatform, se debe habilitar la API de Vertex AI si es que aún no se ha habilitado:  
+
+```bash
+gcloud services enable aiplatform.googleapis.com
+```
 
 ```python
 from google.cloud import aiplatform
@@ -133,20 +164,21 @@ dataset = aiplatform.TabularDataset.create(
 )
 
 training_job = aiplatform.AutoMLTabularTrainingJob(
-    display_name="modelo-outcome",
+    display_name="modelo-num",
     optimization_prediction_type="classification",
-    optimization_objective="maximize-log-loss"
+    optimization_objective="minimize-log-loss"
 )
 
 model = training_job.run(
     dataset=dataset,
-    target_column="Outcome",
+    target_column="num",
+    model_display_name="modelo_outcome_autoML",
     training_fraction_split=0.8,
     validation_fraction_split=0.1,
     test_fraction_split=0.1,
-    model_display_name="modelo_outcome_autoML"
 )
 ```
+Si todo ok hasta aqui, el entrenamiento del modelo puede llegar a tomar al menos 1 hora.
 
 ---
 

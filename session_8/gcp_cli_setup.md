@@ -3,10 +3,15 @@
 ### 1. Instalar Google Cloud CLI
 
 #### Windows:
-1. Descargar el instalador desde:
-   https://cloud.google.com/sdk/docs/install
-2. Ejecutar el instalador y seguir instrucciones.
-3. Reiniciar terminal (si es necesario) y verificar:
+1. Descargar el .zip desde:  
+   https://storage.googleapis.com/cloud-sdk-release/google-cloud-sdk-540.0.0-windows-x86_64.zip
+2. Extraer en:
+   C:\Program Files (x86)\Google\Cloud SDK\  
+3. Ejecutar en un Command Prompt como administrador:   
+   C:\Program Files (x86)\Google\Cloud SDK\google-cloud-sdk\install.bat  
+4. Acepta el uso de Python embebido.  
+5. Añade manualmente la ruta indicada al PATH del sistema de las variables de ambiente una vez la instalcion haya concluido.  
+5. Reiniciar terminal (si es necesario) y verificar:
    ```bash
    gcloud --version
    ```
@@ -67,10 +72,11 @@ Esto creará un archivo de credenciales en:
 ~/.config/gcloud/application_default_credentials.json
 ```
 
-Puedes exportarlo como variable de entorno en tu notebook o terminal:
+Puedes exportarlo, en linux, como variable de entorno en tu notebook o terminal:
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS="~/.config/gcloud/application_default_credentials.json"
 ```
+**_En windows, se debe crear la variable de entorno a nivel de sistema con la ruta que genera el instalador_**
 
 ---
 
@@ -81,7 +87,7 @@ gcloud storage buckets list
 ```
 O listar datasets de BigQuery:
 ```bash
-gcloud bigquery datasets list
+bq ls
 ```
 
 ---
