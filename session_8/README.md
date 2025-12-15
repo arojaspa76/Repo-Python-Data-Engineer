@@ -1,6 +1,6 @@
 ![logo bsg](images/logobsg.png)
 
-# Curso Ingeniería de Datos en Plataformas en la Nube y Data Warehousing con Python - Sesion 8
+# Curso Ingeniería de Datos en Plataformas en la Nube y Data Warehousing con Python - Sesion 8 y 9
 
 ## Almacenamiento y Data Warehousing con Python en AWS y GCP
 

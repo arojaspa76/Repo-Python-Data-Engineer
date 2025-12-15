@@ -1,0 +1,21 @@
+![logo bsg](images/logobsg.png)
+
+# Curso Ingeniería de Datos en Plataformas en la Nube y Data Warehousing con Python - Sesion 10 y 11
+
+## Crear y automatizar pipelines de datos escalables usando AWS Glue y Lambda
+
+### Tabla de Contenido
+* [Introducción a AWS Glue para Pipelines de Datos](awsglue.md)
+* Automatización con AWS Lambda  
+* Optimización de Pipelines en AWS  
+* Ejercicios Prácticos  
+* Proyecto Final Integrador  
+
+
+## Caso de Uso Real: E-commerce Analytics Pipeline
+### Contexto: Construiremos un pipeline completo para una empresa de e-commerce que necesita:
+
+* Procesar transacciones de ventas desde múltiples fuentes (S3, RDS, APIs)
+* Transformar y enriquecer datos en tiempo real
+* Generar reportes analíticos automáticos
+* Optimizar costos y rendimiento
