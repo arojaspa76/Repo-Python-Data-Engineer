@@ -5,11 +5,9 @@
 ## Crear y automatizar pipelines de datos escalables usando AWS Glue y Lambda
 
 ### Tabla de Contenido
-* [Introducción a AWS Glue para Pipelines de Datos](awsglue.md)
-* Automatización con AWS Lambda  
-* Optimización de Pipelines en AWS  
-* Ejercicios Prácticos  
-* Proyecto Final Integrador  
+* [Introducción a AWS Glue para Pipelines de Datos](aws_glue_pipeline.md)
+* [Automatización con AWS Lambda](aws_lambda_automation.md)
+* Optimización de Pipelines en AWS
 
 
 ## Caso de Uso Real: E-commerce Analytics Pipeline
