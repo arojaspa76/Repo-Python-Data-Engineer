@@ -413,9 +413,7 @@ Crea un archivo json `db.json` con la siguiete informacion:
 aws glue create-database --database-input file://db.json --profile glue-lab
 
 # Verificar
-aws glue get-database \
-    --name sales_department_datawarehouse \
-    --profile glue-lab
+aws glue get-database --name sales_department_datawarehouse --profile glue-lab
 ```
 
 ### Paso 3.2: Crear y Ejecutar Crawler
@@ -427,28 +425,32 @@ aws glue get-database \
 3. Click **Next**
 
 **Configurar fuente de datos:**
-4. Click **Add a data source**
-5. **S3 path**: `s3://bsg-data-raw/raw/sales/`
-6. Click **Add an S3 data source**
-7. Click **Next**
+
+4. Click **Add a data source**  
+5. **S3 path**: `s3://bsg-data-raw/raw/sales/`  
+6. Click **Add an S3 data source**  
+7. Click **Next**  
 
 **Configurar rol IAM:**
-8. Selecciona: **Choose an existing IAM role**
-9. Rol: `AWSGlueServiceRole-DataEngineer`
-10. Click **Next**
+
+8. Selecciona: **Choose an existing IAM role**  
+9. Rol: `AWSGlueServiceRole-DataEngineer`  
+10. Click **Next**  
 
 **Configurar destino:**
-11. **Target database**: `sales_department_datawarehouse`
-12. **Table name prefix**: `raw_` (opcional)
-13. Click **Next**
+
+11. **Target database**: `sales_department_datawarehouse`  
+12. **Table name prefix**: `raw_` (opcional)  
+13. Click **Next**  
 
 **Revisar y crear:**
-14. Revisa la configuración
-15. Click **Create crawler**
-16. Selecciona el crawler creado y click **Run crawler**
-17. Espera 1-2 minutos hasta que el status sea **Completed**
 
-**Usando Script Python (Automatizado):**
+14. Revisa la configuración  
+15. Click **Create crawler**  
+16. Selecciona el crawler creado y click **Run crawler**  
+17. Espera 1-2 minutos hasta que el status sea **Completed**  
+
+**Usando Script Python (Automatizado):**  
 
 Crea un archivo `setup_crawler.py`:
 
