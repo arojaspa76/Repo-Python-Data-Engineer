@@ -16,6 +16,19 @@ Al finalizar este laboratorio, los estudiantes podrán:
 
 ---
 
+## Que es AWS glue, AWS Athena, AWS LAmbda?
+
+**AWS glue:**  
+Es un servicio de integración de datos completamente administrado, diseñado para facilitar los procesos de ETL (Extracción, Transformación y Carga). Permite descubrir, preparar, mover e integrar datos de múltiples fuentes. Incluye un Catálogo de Datos centralizado para almacenar metadatos y "crawlers" (rastreadores) que infieren automáticamente los esquemas de los datos almacenados, por ejemplo, en Amazon S3.   
+
+**AWS Athena:**  
+Es un servicio de consultas interactivas sin servidor que permite analizar datos directamente en Amazon S3 utilizando SQL estándar. Es ideal para análisis de datos ad-hoc, análisis de registros e informes de inteligencia empresarial, ya que no requiere configurar ni administrar ninguna infraestructura de base de datos, y solo se paga por las consultas ejecutadas (por la cantidad de datos escaneados).  
+
+**AWS Lambda:**  
+Es un servicio de informática (cómputo) sin servidor que ejecuta código en respuesta a eventos específicos, sin que el usuario tenga que aprovisionar o gestionar servidores. Se utiliza para construir microservicios ligeros, automatizar tareas disparadas por eventos (como la carga de un archivo en S3 o una solicitud a una API), y se factura por el tiempo de ejecución (milisegundos).  
+
+---
+
 ## Descripción general de la arquitectura
 
 ```
