@@ -237,8 +237,8 @@ aws iam get-role \
 **Usando la Consola:**
 
 1. Ve a **S3** → **Create bucket**
-2. **Bucket name**: `glue-lab-<tu-nombre>-<numero-random>` 
-   - Ejemplo: `glue-lab-juan-12345`
+2. **Bucket name**: `bsg-data-raw` 
+   - Ejemplo: `bsg-data-raw`
    - ⚠️ Debe ser único globalmente
 3. **AWS Region**: `us-east-1` (N. Virginia)
 4. Deja el resto de configuraciones por defecto
@@ -248,7 +248,7 @@ aws iam get-role \
 
 ```bash
 # Reemplaza con tu nombre único
-BUCKET_NAME="glue-lab-$(whoami)-$RANDOM"
+BUCKET_NAME="bsg-data-raw"
 
 # Crear bucket
 aws s3 mb s3://$BUCKET_NAME --region us-east-1 --profile glue-lab
@@ -392,25 +392,29 @@ generate_sales_data(100)
 
 1. Ve a **AWS Glue** → **Databases** (en el menú izquierdo)
 2. Click **Add database**
-3. **Name**: `ecommerce_datawarehouse`
+3. **Name**: `sales_department_datawarehouse`
 4. **Description**: "Data warehouse for e-commerce analytics - Lab"
-5. **Location** (opcional): `s3://glue-lab-<tu-bucket>/curated/`
+5. **Location** (opcional): `s3://bsg-data-raw/curated/`
 6. Click **Create database**
 
 **Usando AWS CLI:**
 
+Crea un archivo json `db.json` con la siguiete informacion: 
+
+```json
+{
+  "Name": "sales_department_datawarehouse",
+  "Description": "Data warehouse for sales department",
+  "LocationUri": "s3://bsg-data-raw/curated/"
+}
+```
+
 ```bash
-aws glue create-database \
-    --database-input '{
-        "Name": "ecommerce_datawarehouse",
-        "Description": "Data warehouse for e-commerce analytics - Lab",
-        "LocationUri": "s3://'$BUCKET_NAME'/curated/"
-    }' \
-    --profile glue-lab
+aws glue create-database --database-input file://db.json --profile glue-lab
 
 # Verificar
 aws glue get-database \
-    --name ecommerce_datawarehouse \
+    --name sales_department_datawarehouse \
     --profile glue-lab
 ```
 
@@ -424,7 +428,7 @@ aws glue get-database \
 
 **Configurar fuente de datos:**
 4. Click **Add a data source**
-5. **S3 path**: `s3://glue-lab-<tu-bucket>/raw/sales/`
+5. **S3 path**: `s3://bsg-data-raw/raw/sales/`
 6. Click **Add an S3 data source**
 7. Click **Next**
 
@@ -434,7 +438,7 @@ aws glue get-database \
 10. Click **Next**
 
 **Configurar destino:**
-11. **Target database**: `ecommerce_datawarehouse`
+11. **Target database**: `sales_department_datawarehouse`
 12. **Table name prefix**: `raw_` (opcional)
 13. Click **Next**
 
@@ -454,9 +458,9 @@ import time
 import os
 
 # Configuración
-BUCKET_NAME = os.environ.get('GLUE_LAB_BUCKET', 'glue-lab-tu-bucket')
+BUCKET_NAME = os.environ.get('GLUE_LAB_BUCKET', 'bsg-data-raw')
 REGION = 'us-east-1'
-DATABASE_NAME = 'ecommerce_datawarehouse'
+DATABASE_NAME = 'sales_department_datawarehouse'
 ROLE_NAME = 'AWSGlueServiceRole-DataEngineer'
 
 # Cliente de Glue
@@ -610,12 +614,12 @@ python setup_crawler.py
 ```bash
 # Listar tablas
 aws glue get-tables \
-    --database-name ecommerce_datawarehouse \
+    --database-name sales_department_datawarehouse \
     --profile glue-lab
 
 # Ver esquema de una tabla específica
 aws glue get-table \
-    --database-name ecommerce_datawarehouse \
+    --database-name sales_department_datawarehouse \
     --name sales \
     --profile glue-lab
 ```
@@ -676,7 +680,7 @@ from sys import exit
 
 BUCKET_NAME = os.environ.get('GLUE_LAB_BUCKET', 'REEMPLAZAR')
 REGION = 'us-east-1'
-DATABASE_NAME = 'ecommerce_datawarehouse'
+DATABASE_NAME = 'sales_department_datawarehouse'
 ROLE_NAME = 'AWSGlueServiceRole-DataEngineer'
 
 session = boto3.Session(profile_name='glue-lab', region_name=REGION)
@@ -818,7 +822,7 @@ aws s3 rm s3://$BUCKET_NAME/temp/ --recursive --profile glue-lab
 
 # 3. Eliminar tablas del catálogo (se pueden recrear con crawlers)
 aws glue delete-table \
-    --database-name ecommerce_datawarehouse \
+    --database-name sales_department_datawarehouse \
     --name sales \
     --profile glue-lab
 
@@ -833,7 +837,7 @@ aws s3 ls s3://$BUCKET_NAME --recursive --human-readable --summarize --profile g
 
 #!/bin/bash
 BUCKET_NAME="tu-bucket-aqui"
-DATABASE_NAME="ecommerce_datawarehouse"
+DATABASE_NAME="sales_department_datawarehouse"
 PROFILE="glue-lab"
 
 echo "🧹 Iniciando limpieza completa..."
@@ -900,7 +904,7 @@ Al terminar esta configuración, deberías tener:
 - Datos de ejemplo en `raw/sales/`, `raw/customers/`, `raw/events/`
 
 ### ✅ En AWS Glue:
-- Database: `ecommerce_datawarehouse`
+- Database: `sales_department_datawarehouse`
 - Crawlers configurados: `sales-data-crawler`, `customers-data-crawler`, `events-data-crawler`
 - Tablas catalogadas: `sales`, `customers`, `events`
 
@@ -991,7 +995,7 @@ def create_glue_database():
     try:
         glue_client.create_database(
             DatabaseInput={
-                'Name': 'ecommerce_datawarehouse',
+                'Name': 'sales_department_datawarehouse',
                 'Description': 'Data warehouse for e-commerce analytics',
                 'LocationUri': 's3://mi-bucket/curated/',
                 'Parameters': {
@@ -1012,7 +1016,7 @@ def create_crawler_for_sales():
     crawler_config = {
         'Name': 'sales-data-crawler',
         'Role': 'AWSGlueServiceRole-DataEngineer',  # Rol IAM con permisos
-        'DatabaseName': 'ecommerce_datawarehouse',
+        'DatabaseName': 'sales_department_datawarehouse',
         'Description': 'Crawler for sales transaction data',
         'Targets': {
             'S3Targets': [
@@ -1102,7 +1106,7 @@ print(f"⏰ Timestamp: {datetime.now().isoformat()}")
 
 # Leer datos de ventas desde el catálogo
 sales_dyf = glueContext.create_dynamic_frame.from_catalog(
-    database="ecommerce_datawarehouse",
+    database="sales_department_datawarehouse",
     table_name="sales",
     transformation_ctx="sales_dyf"
 )
