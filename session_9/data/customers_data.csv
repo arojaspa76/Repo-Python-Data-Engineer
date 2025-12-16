@@ -1,0 +1,6 @@
+customer_id,customer_name,email,customer_segment,registration_date,country,city
+CUST123,John Doe,john.doe@email.com,Premium,2023-06-15,US,New York
+CUST456,Jane Smith,jane.smith@email.com,Regular,2023-08-22,US,Los Angeles
+CUST789,Bob Johnson,bob.j@email.com,Premium,2023-05-10,UK,London
+CUST321,Alice Williams,alice.w@email.com,Regular,2023-09-01,CA,Toronto
+CUST654,Charlie Brown,charlie.b@email.com,VIP,2023-03-20,US,Chicago

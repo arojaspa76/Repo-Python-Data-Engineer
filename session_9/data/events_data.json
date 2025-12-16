@@ -1,0 +1,8 @@
+{"event_id":"EVT001","customer_id":"CUST123","event_type":"page_view","page_url":"/products/electronics","timestamp":"2024-01-15T09:30:00Z"}
+{"event_id":"EVT002","customer_id":"CUST123","event_type":"page_view","page_url":"/products/prod456","timestamp":"2024-01-15T09:35:00Z"}
+{"event_id":"EVT003","customer_id":"CUST456","event_type":"page_view","page_url":"/products/home","timestamp":"2024-01-15T10:00:00Z"}
+{"event_id":"EVT004","customer_id":"CUST456","event_type":"add_to_cart","product_id":"PROD789","timestamp":"2024-01-15T10:05:00Z"}
+{"event_id":"EVT005","customer_id":"CUST789","event_type":"page_view","page_url":"/products/electronics","timestamp":"2024-01-16T11:20:00Z"}
+{"event_id":"EVT006","customer_id":"CUST321","event_type":"page_view","page_url":"/products/prod789","timestamp":"2024-01-17T14:30:00Z"}
+{"event_id":"EVT007","customer_id":"CUST654","event_type":"add_to_cart","product_id":"PROD101","timestamp":"2024-01-18T16:45:00Z"}
+{"event_id":"EVT008","customer_id":"CUST123","event_type":"purchase","product_id":"PROD303","timestamp":"2024-01-18T17:00:00Z"}

@@ -1,0 +1,5 @@
+{
+  "Name": "sales_department_datawarehouse",
+  "Description": "Data warehouse for sales department",
+  "LocationUri": "s3://bsg-data-raw/curated/"
+}
