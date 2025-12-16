@@ -327,3 +327,6 @@ Optimización no es “más DPUs”. Es reducir I/O y shuffles.
 - duración anómala (p95)
 
 Sin telemetría, no se puede evaluar ni mejorar el sistema.
+
+## Siguientes pasos
+[Athena Lab – Querying Optimized Data Lakes with AWS Glue](athena_lab.md)
