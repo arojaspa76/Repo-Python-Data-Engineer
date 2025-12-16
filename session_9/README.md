@@ -7,7 +7,6 @@
 ### Tabla de Contenido
 * [Introducción a AWS Glue para Pipelines de Datos](aws_glue_pipeline.md)
 * [Automatización con AWS Lambda](aws_lambda_automation.md)
-* Optimización de Pipelines en AWS
 
 
 ## Caso de Uso Real: E-commerce Analytics Pipeline
