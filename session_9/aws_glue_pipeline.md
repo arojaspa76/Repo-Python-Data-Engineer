@@ -142,6 +142,7 @@ En la pantalla de permisos:
    - ✅ `CloudWatchLogsFullAccess`
 3. Click **Next** → **Create user**
 4. **⚠️ IMPORTANTE**: Descarga las credenciales CSV o copia el Access Key ID y Secret Access Key
+5. **⚠️ IMPORTANTE**: Inicia sesion con el usuario que se acaba de crear en la consola de AWS
 
 ### Paso 1.4: Configurar Credenciales Localmente
 
