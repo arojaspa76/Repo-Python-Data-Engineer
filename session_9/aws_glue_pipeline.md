@@ -505,7 +505,7 @@ def create_crawler(name, path, description):
                 'DeleteBehavior': 'LOG'
             },
             RecrawlPolicy={
-                'RecrawlBehavior': 'CRAWL_NEW_FOLDERS_ONLY'
+                'RecrawlBehavior': 'CRAWL_EVERYTHING'
             }
         )
         print(f"✅ Crawler '{name}' creado exitosamente")
