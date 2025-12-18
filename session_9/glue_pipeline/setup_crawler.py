@@ -7,12 +7,13 @@ BUCKET_NAME = 'bsg-data-raw'
 REGION = 'us-east-1'
 DATABASE_NAME = 'sales_department_datawarehouse'
 ROLE_NAME = 'LabRole'
-TABLE_PREFIX = "python_"
+TABLE_PREFIX = "python_raw_"
 
 # Cliente de Glue
-session = boto3.Session(profile_name='pgpcc', region_name=REGION)
+session = boto3.Session(profile_name='pgpcc2', region_name=REGION)
 glue_client = session.client('glue')
 iam_client = session.client('iam')
+s3_client = session.client('s3')
 
 def get_role_arn():
     """Obtener ARN del rol"""
