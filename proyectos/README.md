@@ -1,6 +1,6 @@
 ![logo bsg](images/logobsg.png)
 
-# Curso Ingeniería de Datos en Plataformas en la Nube y Data Warehousing con Python
+# Curso Ingeniería de Datos en Plataformas en la Nube y Data Warehousing con Python - Proyectos
 
 ## Proyectos Finales
 
