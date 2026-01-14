@@ -1,6 +1,6 @@
 ![logo bsg](images/logobsg.png)
 
-# Proyecto 2: Pipeline en GCP con Cloud Storage, Data Fusion y BigQuery
+# Proyecto 2: Pipeline en GCP con Cloud Storage, Data Fusion y BigQuery - Solo GCP
 
 ## 🌐 Objetivo
 Construir una canalización de datos en GCP que lea archivos desde Cloud Storage, los transforme con Cloud Data Fusion y los cargue a BigQuery para su análisis. Este proyecto simula un ETL visual gestionado en GCP con soporte para tareas Python donde sea necesario.

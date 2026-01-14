@@ -1,6 +1,6 @@
 ![logo bsg](images/logobsg.png)
 
-# Proyecto 1: Pipeline ETL en AWS con S3, AWS Glue y Amazon Redshift
+# Proyecto 1: Pipeline ETL en AWS con S3, AWS Glue y Amazon Redshift - Solo AWS
 
 ## 🌐 Objetivo
 Diseñar e implementar una canalización de datos en AWS que cargue datos desde un bucket S3, los procese usando AWS Glue (ETL con Python) y almacene el resultado en Amazon Redshift. El objetivo es construir un pipeline escalable y eficiente para preparar y almacenar datos analíticos en la nube.

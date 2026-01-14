@@ -1,6 +1,6 @@
 ![logo bsg](images/logobsg.png)
 
-# Proyecto 3: Pipeline Multicloud Azure → AWS con Redshift
+# Proyecto 3: Pipeline Multicloud Azure → AWS con Redshift - Multicloud
 
 ## 🌐 Objetivo
 Construir un pipeline multicloud que transfiera datos desde Azure Blob Storage a Amazon Redshift, pasando por S3 como zona de staging. El proyecto simula un caso de integración de datos entre nubes, utilizando Python para la orquestación y automatización del proceso.
