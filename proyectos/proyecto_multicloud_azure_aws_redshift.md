@@ -46,7 +46,8 @@ Construir un pipeline multicloud que transfiera datos desde Azure Blob Storage a
 
 ## 📄 Entregables esperados
 - Scripts Python (transferencia y carga)
-- Capturas de Azure Blob, AWS S3 y Redshift
+- Capturas de Azure Blob, AWS S3 y Redshift en el documento entregable
+- Un video de no mas de 30 minutos evidenciando la funcionalidad.
 - SQL de carga (COPY) y consulta de validación
 - Diagrama de arquitectura multicloud y resumen técnico
 

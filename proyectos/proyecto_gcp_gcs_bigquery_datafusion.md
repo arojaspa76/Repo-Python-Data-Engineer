@@ -46,7 +46,8 @@ Construir una canalización de datos en GCP que lea archivos desde Cloud Storage
 
 ## 📄 Entregables esperados
 - Pipeline exportado desde Data Fusion (JSON)
-- Capturas de GCS, Data Fusion y BigQuery
+- Capturas de GCS, Data Fusion y BigQuery en el documento entregable
+- Un video de no mas de 30 minutos evidenciando la funcionalidad.
 - Consulta de validación en BigQuery
 - Diagrama del flujo de datos y resumen técnico
 

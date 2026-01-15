@@ -49,7 +49,8 @@ Diseñar e implementar una canalización de datos en AWS que cargue datos desde 
 
 ## 📄 Entregables esperados
 - Script del Job de Glue o notebook
-- Evidencias de ejecución: capturas en Glue y Redshift
+- Evidencias de ejecución: capturas en Glue y Redshift en el documento entregable
+- Un video de no mas de 30 minutos evidenciando la funcionalidad.
 - Diagrama del pipeline (S3 → Glue → Redshift)
 - Documento resumen explicando decisiones técnicas
 
