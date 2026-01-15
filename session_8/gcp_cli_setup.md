@@ -18,15 +18,15 @@
 
 #### macOS:
 ```bash
-curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-456.0.0-darwin-arm.tar.gz
-tar -xf google-cloud-cli-456.0.0-darwin-arm.tar.gz
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-552.0.0-darwin-arm.tar.gz
+tar -xf google-cloud-cli-552.0.0-darwin-arm.tar.gz
 ./google-cloud-sdk/install.sh
 ```
 
 #### Linux:
 ```bash
-curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-456.0.0-linux-x86_64.tar.gz
-tar -xf google-cloud-cli-456.0.0-linux-x86_64.tar.gz
+curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-552.0.0-linux-x86_64.tar.gz
+tar -xf google-cloud-cli-552.0.0-linux-x86_64.tar.gz
 ./google-cloud-sdk/install.sh
 ```
 
