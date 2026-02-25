@@ -1,0 +1,12 @@
+numpy
+pandas
+matplotlib
+ipywidgets
+ipykernel
+ipython
+datasets
+pytest
+black
+pylint
+openpyxl
+seaborn
