@@ -7,6 +7,7 @@ Esta guía contiene:
 ✔️ Cómo crear Functions/Lambda/Cloud Functions  
 ✔️ **Los códigos Python completos que deben copiarse dentro de cada función**  
 ✔️ Archivo listo para GitHub  
+✔️ Archivo de ejecucion de este paso a paso pero usando CLI. [EjecucionCLI](EjecucionCLI.md)
 
 ---
 
