@@ -70,7 +70,7 @@ CREATE TABLE ventas (
 # Copiar datos desde un CSV en S3 a la tabla (asumiendo el CSV no tiene cabecera y campos separados por coma)
 cursor.execute("""
 COPY ventas
-FROM 's3://mi-bucket-datos/ventas2025.csv'
+FROM 's3://mi-bucket-datos-bsg/ventas2025.csv'
 IAM_ROLE 'arn:aws:iam::123456789012:role/RedshiftCopyRole'
 FORMAT AS CSV
 DELIMITER ','
